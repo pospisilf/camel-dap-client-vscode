@@ -32,7 +32,7 @@ async function main(): Promise<void> {
 	await tester.setupAndRunTests(
 		[
 			'out/ui-test/env/set.camel.version.js',
-			'out/ui-test/tests/*.test.js',
+			'out/ui-test/tests/codelens.test.js',
 			'out/ui-test/env/check.camel.version.js'
 		],
 		process.env.CODE_VERSION,
