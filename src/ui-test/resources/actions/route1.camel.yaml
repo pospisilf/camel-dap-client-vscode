@@ -11,7 +11,7 @@
           constant: "YamlHeader"
       - setProperty:
           name: "from"
-          constant: "yaml-dsl"
+          constant: "route1"
       - setBody:
           constant: "Hello Camel from"
       - log: "${header.header}: ${body} ${exchangeProperty.from}"

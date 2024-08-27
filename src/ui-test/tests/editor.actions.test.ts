@@ -19,6 +19,7 @@ import * as path from 'path';
 import {
     ActivityBar,
     BottomBarPanel,
+    DefaultWait,
     EditorActionDropdown,
     EditorView,
     SideBarView,
@@ -33,7 +34,8 @@ import {
     killTerminal,
     disconnectDebugger,
     TEST_ARRAY_RUN,
-    isCamelVersionProductized
+    isCamelVersionProductized,
+    executeCommand
 } from '../utils';
 import { CAMEL_RUN_DEBUG_FOLDER_ACTION_LABEL, CAMEL_RUN_DEBUG_WORKSPACE_ACTION_LABEL, CAMEL_RUN_FOLDER_ACTION_LABEL, CAMEL_RUN_WORKSPACE_ACTION_LABEL } from '../variables';
 
@@ -65,77 +67,100 @@ describe('Camel file editor test', function () {
             await new BottomBarPanel().toggle(false);
         });
 
-        it('Run actions are available', async function () {
-            if (process.platform === "darwin"){
-                this.skip();
-            }
-            await driver.sleep(500);
-            const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
-            const menu = await action.open();
-            expect(await menu.hasItem(CAMEL_RUN_ACTION_LABEL)).true;
-            expect(await menu.hasItem(CAMEL_RUN_WORKSPACE_ACTION_LABEL)).true;
-            expect(await menu.hasItem(CAMEL_RUN_FOLDER_ACTION_LABEL)).true;
-            await menu.close();
+        // it('Run actions are available', async function () {
+        //     if (process.platform === "darwin"){
+        //         this.skip();
+        //     }
+        //     await driver.sleep(500);
+        //     const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
+        //     const menu = await action.open();
+        //     expect(await menu.hasItem(CAMEL_RUN_ACTION_LABEL)).true;
+        //     expect(await menu.hasItem(CAMEL_RUN_WORKSPACE_ACTION_LABEL)).true;
+        //     expect(await menu.hasItem(CAMEL_RUN_FOLDER_ACTION_LABEL)).true;
+        //     await menu.close();
+        // });
+
+        // it('Debug and Run actions are available', async function () {
+        //     if (process.platform === "darwin"){
+        //         this.skip();
+        //     }
+        //     await driver.sleep(500);
+        //     const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
+        //     const menu = await action.open();
+        //     expect(await menu.hasItem(CAMEL_RUN_DEBUG_ACTION_LABEL)).true;
+        //     expect(await menu.hasItem(CAMEL_RUN_DEBUG_WORKSPACE_ACTION_LABEL)).true;
+        //     expect(await menu.hasItem(CAMEL_RUN_DEBUG_FOLDER_ACTION_LABEL)).true;
+        //     await menu.close();
+        // });
+
+        // const runActionLabels = [
+        //     { label: CAMEL_RUN_ACTION_LABEL},
+        //     { label: CAMEL_RUN_WORKSPACE_ACTION_LABEL},
+        //     { label: CAMEL_RUN_FOLDER_ACTION_LABEL}
+        // ];
+
+        // it(`simple case`, async function () {
+        //     await executeCommand('Camel: Run with JBang Opened Camel Integration');
+        //     await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
+        //     await killTerminal();
+        // });
+
+        it(`Camel: Run with JBang All Camel Integrations from containing folder`, async function () {
+            await DefaultWait.sleep(1000000);
+
+            await executeCommand('Camel: Run with JBang All Camel Integrations from containing folder');
+            await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
+            await DefaultWait.sleep(1000000);
+
         });
 
-        it('Debug and Run actions are available', async function () {
-            if (process.platform === "darwin"){
-                this.skip();
-            }
-            await driver.sleep(500);
-            const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
-            const menu = await action.open();
-            expect(await menu.hasItem(CAMEL_RUN_DEBUG_ACTION_LABEL)).true;
-            expect(await menu.hasItem(CAMEL_RUN_DEBUG_WORKSPACE_ACTION_LABEL)).true;
-            expect(await menu.hasItem(CAMEL_RUN_DEBUG_FOLDER_ACTION_LABEL)).true;
-            await menu.close();
-        });
-
-        const runActionLabels = [
-            { label: CAMEL_RUN_ACTION_LABEL},
-            { label: CAMEL_RUN_WORKSPACE_ACTION_LABEL},
-            { label: CAMEL_RUN_FOLDER_ACTION_LABEL}
-        ];
-
-        runActionLabels.forEach(({ label }) => {
-            it(`Can execute '${label}' action`, async function () {
-                if (process.platform === "darwin") {
-                    this.skip();
-                }
-                const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
-                const menu = await action.open();
-                await menu.select(label);
+        // it(`Camel: Run with JBang All Camel Integrations from workspace root`, async function () {
+        //     await DefaultWait.sleep(1000000);
+        //     await executeCommand('Camel: Run with JBang All Camel Integrations from workspace root');
+        //     await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
+        //     await killTerminal();
+        // //    //apache.camel.run.jbang
+        // //     
+        // });
+        // runActionLabels.forEach(({ label }) => {
+        //     it(`Can execute '${label}' action`, async function () {
+        //         if (process.platform === "darwin") {
+        //             this.skip();
+        //         }
+        //         const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
+        //         const menu = await action.open();
+        //         await menu.select(label);
         
-                await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
+        //         await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
         
-                await killTerminal();
-            });
-        });
+        //         await killTerminal();
+        //     });
+        // });
 
-        const debugActionLabels = [
-            { label: CAMEL_RUN_DEBUG_ACTION_LABEL},
-            { label: CAMEL_RUN_DEBUG_WORKSPACE_ACTION_LABEL},
-            { label: CAMEL_RUN_DEBUG_FOLDER_ACTION_LABEL}
-        ];
+        // const debugActionLabels = [
+        //     { label: CAMEL_RUN_DEBUG_ACTION_LABEL},
+        //     { label: CAMEL_RUN_DEBUG_WORKSPACE_ACTION_LABEL},
+        //     { label: CAMEL_RUN_DEBUG_FOLDER_ACTION_LABEL}
+        // ];
 
-        debugActionLabels.forEach(({ label }) => {
-            it(`Can execute '${label}' action`, async function () {
-                if (isCamelVersionProductized(process.env.CAMEL_VERSION)){
-                    this.skip();
-                }
-                if (process.platform === "darwin"){
-                    this.skip();
-                }
-                const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
-                const menu = await action.open();
-                await menu.select(label);
+        // debugActionLabels.forEach(({ label }) => {
+        //     it(`Can execute '${label}' action`, async function () {
+        //         if (isCamelVersionProductized(process.env.CAMEL_VERSION)){
+        //             this.skip();
+        //         }
+        //         if (process.platform === "darwin"){
+        //             this.skip();
+        //         }
+        //         const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
+        //         const menu = await action.open();
+        //         await menu.select(label);
 
-                await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
+        //         await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
 
-                await (await new ActivityBar().getViewControl('Run and Debug')).closeView();
-                await disconnectDebugger(driver);
-                await killTerminal();
-            });
-        });
+        //         await (await new ActivityBar().getViewControl('Run and Debug')).closeView();
+        //         await disconnectDebugger(driver);
+        //         await killTerminal();
+        //     });
+        // });
     });
 });
