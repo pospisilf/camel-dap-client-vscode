@@ -54,11 +54,11 @@ describe('Camel file editor test', function () {
             await (await new ActivityBar().getViewControl('Explorer')).openView();
 
             const section = await new SideBarView().getContent().getSection('actions');
-            await section.openItem(CAMEL_ROUTE_YAML_WITH_SPACE);
+            await section.openItem('top', 'top-route1.camel.yaml');
 
             editorView = new EditorView();
             await driver.wait(async function () {
-                return (await editorView.getOpenEditorTitles()).find(title => title === CAMEL_ROUTE_YAML_WITH_SPACE);
+                return (await editorView.getOpenEditorTitles()).find(title => title === 'top-route1.camel.yaml');
             }, 5000);
         });
 
@@ -99,68 +99,57 @@ describe('Camel file editor test', function () {
         //     { label: CAMEL_RUN_FOLDER_ACTION_LABEL}
         // ];
 
-        // it(`simple case`, async function () {
-        //     await executeCommand('Camel: Run with JBang Opened Camel Integration');
-        //     await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
-        //     await killTerminal();
-        // });
-
-        it(`Camel: Run with JBang All Camel Integrations from containing folder`, async function () {
-            await DefaultWait.sleep(1000000);
-
-            await executeCommand('Camel: Run with JBang All Camel Integrations from containing folder');
-            await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
-            await DefaultWait.sleep(1000000);
-
+        it(`simple case`, async function () {
+            await executeCommand('Camel: Run with JBang Opened Camel Integration');
+            await waitUntilTerminalHasText(driver, ['Hello Camel from top-route1'], 2000, 120000);
+            await killTerminal();
         });
 
-        // it(`Camel: Run with JBang All Camel Integrations from workspace root`, async function () {
-        //     await DefaultWait.sleep(1000000);
-        //     await executeCommand('Camel: Run with JBang All Camel Integrations from workspace root');
-        //     await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
-        //     await killTerminal();
-        // //    //apache.camel.run.jbang
-        // //     
-        // });
-        // runActionLabels.forEach(({ label }) => {
-        //     it(`Can execute '${label}' action`, async function () {
-        //         if (process.platform === "darwin") {
-        //             this.skip();
-        //         }
-        //         const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
-        //         const menu = await action.open();
-        //         await menu.select(label);
+
+        it(`Camel: Run with JBang All Camel Integrations from containing folder`, async function () {
+            await executeCommand('Camel: Run with JBang All Camel Integrations from containing folder');
+            await waitUntilTerminalHasText(driver, ['Hello Camel from top-route1', 'Hello Camel from top-route2'], 2000, 60000);
+            await killTerminal();
+        });
+
+        it(`Camel: Run with JBang All Camel Integrations from workspace root`, async function () {
+            await executeCommand('Camel: Run with JBang All Camel Integrations from workspace root');
+            await waitUntilTerminalHasText(driver, ['Hello Camel from route1', 'Hello Camel from route2'], 2000, 60000);
+            await killTerminal();   
+        });
+
+        //Run with JBang and Debug Opened Camel Integration
+      
+        it(`Run with JBang and Debug Opened Camel Integration`, async function () {
+           
+            await executeCommand('Camel: Run with JBang and Debug Opened Camel Integration');
+
+            await waitUntilTerminalHasText(driver, ['Hello Camel from top-route1'], 2000, 120000);
+
+            await (await new ActivityBar().getViewControl('Run and Debug')).closeView();
+            await disconnectDebugger(driver);
+            await killTerminal();
+        });
+
+        //Run with JBang and Debug All Camel Integrations from workspace root
+        it(`Run with JBang and Debug All Camel Integrations from workspace root`, async function () {
+
+            await executeCommand('Camel: Run with JBang and Debug All Camel Integrations from workspace root');
+            await waitUntilTerminalHasText(driver, ['Hello Camel from route1', 'Hello Camel from route2'], 2000, 60000);
+            await (await new ActivityBar().getViewControl('Run and Debug')).closeView();
+            await disconnectDebugger(driver);
+            await killTerminal();
+        });
+
+        Run with JBang and Debug All Camel Integrations from containing folder
+        it(`Run with JBang and Debug All Camel Integrations from containing folder`, async function () {
+            await executeCommand('Camel: Run with JBang and Debug All Camel Integrations from containing folder');
+            await waitUntilTerminalHasText(driver, ['Hello Camel from top-route1', 'Hello Camel from top-route2'], 2000, 60000);
+            await (await new ActivityBar().getViewControl('Run and Debug')).closeView();
+            await disconnectDebugger(driver);
+            await killTerminal();
+        });
         
-        //         await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
-        
-        //         await killTerminal();
-        //     });
-        // });
 
-        // const debugActionLabels = [
-        //     { label: CAMEL_RUN_DEBUG_ACTION_LABEL},
-        //     { label: CAMEL_RUN_DEBUG_WORKSPACE_ACTION_LABEL},
-        //     { label: CAMEL_RUN_DEBUG_FOLDER_ACTION_LABEL}
-        // ];
-
-        // debugActionLabels.forEach(({ label }) => {
-        //     it(`Can execute '${label}' action`, async function () {
-        //         if (isCamelVersionProductized(process.env.CAMEL_VERSION)){
-        //             this.skip();
-        //         }
-        //         if (process.platform === "darwin"){
-        //             this.skip();
-        //         }
-        //         const action = (await editorView.getAction("Run or Debug...")) as EditorActionDropdown;
-        //         const menu = await action.open();
-        //         await menu.select(label);
-
-        //         await waitUntilTerminalHasText(driver, TEST_ARRAY_RUN, 2000, 120000);
-
-        //         await (await new ActivityBar().getViewControl('Run and Debug')).closeView();
-        //         await disconnectDebugger(driver);
-        //         await killTerminal();
-        //     });
-        // });
     });
 });
