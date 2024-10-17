@@ -303,7 +303,7 @@
 		"postinstall": "node ./scripts/postinstall.js",
 		"pretest": "npm run compile",
 		"preui-test": "npm run compile",
-		"lint": "eslint src --ext ts",
+		"lint": "eslint src",
 		"test": "node ./out/test/runTest.js",
 		"ui-test": "node ./out/ui-test/uitest_runner.js",
 		"ui-coverage": "npm run ui-test -- coverage"
