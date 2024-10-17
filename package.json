@@ -16,7 +16,7 @@
 		"url": "https://github.com/camel-tooling/camel-dap-client-vscode/issues"
 	},
 	"engines": {
-		"vscode": "^1.84.0"
+		"vscode": "^1.82.0"
 	},
 	"categories": [
 		"Debuggers"
@@ -315,7 +315,7 @@
 		"@types/glob": "^8.1.0",
 		"@types/mocha": "^10.0.9",
 		"@types/node": "^14.18.63",
-		"@types/vscode": "^1.84.0",
+		"@types/vscode": "^1.82.0",
 		"@typescript-eslint/eslint-plugin": "^8.10.0",
 		"@vscode/test-electron": "^2.4.1",
 		"async-wait-until": "^2.0.12",
