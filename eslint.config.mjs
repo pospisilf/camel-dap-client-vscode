@@ -1,31 +1,68 @@
-import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
+// eslint.config.js
 
-export default [
+import { defineConfig } from 'eslint-define-config';
+import ts from '@typescript-eslint/parser';
+import tsEslint from '@typescript-eslint/eslint-plugin';
+import stylisticEslint from '@stylistic/eslint-plugin';
+import chaiFriendly from 'eslint-plugin-chai-friendly';
+
+export default defineConfig([
   {
-    ignores: ['**/out/**', '**/node_modules/**'],
+    ignores: ['**/*.test.js'],
   },
-  js.configs.recommended,
   {
-    files: ['src/**/*.ts', 'src/**/*.tsx'],  // Explicitly include TypeScript files in `src` directory
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      parser: tsParser,
+      parser: ts,
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: 2022,
+        sourceType: 'commonjs',
         project: './tsconfig.json',
+        ecmaFeatures: {
+          impliedStrict: true,
+        },
+      },
+      globals: {
+        // declare global variables here
+        browser: 'readonly',
+        es2024: true,
+        mocha: 'readonly',
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin,
+      '@typescript-eslint': tsEslint,
+      '@stylistic': stylisticEslint,
+      '@chai-friendly': chaiFriendly,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-var-requires': 'off', // allows require statements outside of imports
+      'no-async-promise-executor': 'off', // Deactivated for now as I do not know how to fix it safely
+      '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'no-undef': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-      "no-unused-vars": "off",
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'variable',
+          format: ['camelCase', 'UPPER_CASE'],
+        },
+      ],
+      '@stylistic/semi': 'warn',
+      curly: 'warn',
+      eqeqeq: 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          caughtErrors: 'none', // ignore unused variables in catch blocks
+        },
+      ],
+      'no-throw-literal': 'warn',
+      '@typescript-eslint/no-floating-promises': 'warn',
+      'no-unused-expressions': 'off', // Disable the default rule
+      '@chai-friendly/no-unused-expressions': 'error', // Use chai-friendly version
     },
   },
-];
+]);
