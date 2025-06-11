@@ -2,9 +2,9 @@ name: Main CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, bump-extester-8.15.0]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -15,9 +15,9 @@ jobs:
   main:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        version: [ "1.90.2", max ] # [ "x.x.x" | latest | max ]
-        type: [ stable ] # [ stable | insider ]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        version: ["1.90.2", max] # [ "x.x.x" | latest | max ]
+        type: [stable] # [ stable | insider ]
       fail-fast: false
     timeout-minutes: 30
 
@@ -87,7 +87,7 @@ jobs:
         id: uiTest_MacOS
         if: matrix.os == 'macos-latest'
         run: npm run ui-test
-      
+
       - name: ui test windows
         id: uiTest_Windows
         if: matrix.os == 'windows-latest'
@@ -168,7 +168,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     name: Status Check
-    needs: [ main ]
+    needs: [main]
     steps:
       - name: Test Matrix Result
         run: |
