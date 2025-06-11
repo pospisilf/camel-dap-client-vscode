@@ -59,7 +59,7 @@ async function main(): Promise<void> {
     default:
       tests = [
         "out/src/ui-test/env/set.camel.version.js",
-        "out/src/ui-test/tests/01_install.test.js", // run everything, except deployment tests
+        "out/src/ui-test/tests/debugger.test.js", // run everything, except deployment tests
         "out/src/ui-test/env/check.camel.version.js",
       ];
       settings += "vscode-settings.json";
